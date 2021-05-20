@@ -1,6 +1,10 @@
-package main
+package lib
 
-import "errors"
+import (
+	"encoding/hex"
+	"errors"
+	"fmt"
+)
 
 func buildCommand(command []byte) []byte {
 	send := []byte{0x00, 0x00, 0xff}
@@ -24,6 +28,7 @@ func popFirstResponse(pool []byte) ([]byte, []byte, error) {
 	var err error
 
 	if pool[0] == 0x00 && pool[1] == 0x00 && pool[2] == 0xff {
+		fmt.Println(hex.EncodeToString(pool))
 		length = pool[3]
 		lcs = pool[4]
 		if length != 0 {

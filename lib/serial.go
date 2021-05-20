@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"encoding/hex"
@@ -10,7 +10,7 @@ import (
 	"go.bug.st/serial/enumerator"
 )
 
-func getPortName() (string, error) {
+func GetPortName() (string, error) {
 	ports, error := enumerator.GetDetailedPortsList()
 	if error != nil {
 		return "", error
@@ -23,7 +23,7 @@ func getPortName() (string, error) {
 	return "", errors.New("SERIAL_NOT_CONNECTED")
 }
 
-func sendCommand(port serial.Port, command []byte) (int, error) {
+func SendCommand(port serial.Port, command []byte) (int, error) {
 	builded := buildCommand(command)
 	fmt.Println(hex.EncodeToString(command))
 	n, error := port.Write(builded)
@@ -33,7 +33,7 @@ func sendCommand(port serial.Port, command []byte) (int, error) {
 	return n, nil
 }
 
-func sendAck(port serial.Port) (int, error) {
+func SendAck(port serial.Port) (int, error) {
 	builded := []byte{0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00}
 	n, error := port.Write(builded)
 	if error != nil {
@@ -42,7 +42,7 @@ func sendAck(port serial.Port) (int, error) {
 	return n, nil
 }
 
-func readCommand(port serial.Port) {
+func ReadCommand(port serial.Port) {
 	pool := []byte{}
 	for {
 		buff := make([]byte, 300)
